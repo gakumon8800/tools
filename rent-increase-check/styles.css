@@ -1,0 +1,176 @@
+diff --git a/rent-increase-check/styles.css b/rent-increase-check/styles.css
+new file mode 100644
+index 0000000000000000000000000000000000000000..35ad11d05e2d7bc310f6cb4d99fbd42f47304eb7
+--- /dev/null
++++ b/rent-increase-check/styles.css
+@@ -0,0 +1,170 @@
++:root {
++  --bg: #f7f9f9;
++  --card: #ffffff;
++  --text: #1e2a2a;
++  --muted: #5e6a6a;
++  --accent: #008080;
++  --accent-dark: #006666;
++  --border: #d9e4e4;
++  --high: #b45309;
++  --mid: #0f766e;
++  --low: #2563eb;
++  --risk-high: #b91c1c;
++  --risk-mid: #d97706;
++  --risk-low: #047857;
++}
++
++* {
++  box-sizing: border-box;
++}
++
++body {
++  margin: 0;
++  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
++  background: var(--bg);
++  color: var(--text);
++  line-height: 1.6;
++}
++
++.app {
++  max-width: 880px;
++  margin: 0 auto;
++  padding: 1rem 1rem 2rem;
++}
++
++.card {
++  background: var(--card);
++  border: 1px solid var(--border);
++  border-radius: 12px;
++  padding: 1rem;
++  margin-top: 1rem;
++  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
++}
++
++.hero h1 {
++  margin: 0 0 0.5rem;
++  font-size: clamp(1.4rem, 4vw, 2rem);
++}
++
++.hero p {
++  margin: 0;
++  color: var(--muted);
++}
++
++.field {
++  border: 1px solid var(--border);
++  border-radius: 10px;
++  padding: 0.8rem;
++  margin-bottom: 0.9rem;
++}
++
++.field label {
++  display: block;
++  margin-bottom: 0.35rem;
++  font-weight: 600;
++}
++
++.field input[type="number"] {
++  width: 100%;
++  border: 1px solid #bfd3d3;
++  border-radius: 8px;
++  padding: 0.65rem;
++  font-size: 1rem;
++}
++
++.field legend {
++  font-weight: 700;
++  padding: 0 0.25rem;
++}
++
++.field input[type="radio"] {
++  margin-right: 0.45rem;
++}
++
++.actions {
++  display: flex;
++  gap: 0.65rem;
++  flex-wrap: wrap;
++}
++
++button {
++  border: none;
++  border-radius: 8px;
++  padding: 0.7rem 1.1rem;
++  color: #fff;
++  background: var(--accent);
++  font-weight: 700;
++  cursor: pointer;
++}
++
++button:hover {
++  background: var(--accent-dark);
++}
++
++button.secondary {
++  background: #6b7280;
++}
++
++.error {
++  color: #b91c1c;
++  min-height: 1.2rem;
++  margin: 0 0 0.65rem;
++}
++
++.hidden {
++  display: none;
++}
++
++.badge {
++  display: inline-block;
++  border-radius: 999px;
++  padding: 0.3rem 0.85rem;
++  color: #fff;
++  font-weight: 700;
++  margin-top: 0.2rem;
++}
++
++.badge.level-high {
++  background: var(--high);
++}
++
++.badge.level-mid {
++  background: var(--mid);
++}
++
++.badge.level-low {
++  background: var(--low);
++}
++
++.badge.risk-high {
++  background: var(--risk-high);
++}
++
++.badge.risk-mid {
++  background: var(--risk-mid);
++}
++
++.badge.risk-low {
++  background: var(--risk-low);
++}
++
++.footer {
++  text-align: center;
++  padding: 0 1rem 1.5rem;
++  color: var(--muted);
++  font-size: 0.92rem;
++}
++
++.footer a {
++  color: var(--accent);
++}
++
++@media (max-width: 600px) {
++  .app {
++    padding: 0.8rem 0.75rem 1.4rem;
++  }
++
++  .card {
++    padding: 0.85rem;
++  }
++}
