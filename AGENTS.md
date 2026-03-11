@@ -6,21 +6,27 @@ AI coding agents (such as Codex) should follow the rules below when modifying or
 
 ---
 
-# Project Structure
+# Repository Structure
 
-Each tool must live inside the `/tools` directory.
+Each tool must live in its own folder **at the repository root**.
 
-Example:
+Example structure:
 
-/tools
-/trouble-diagnosis
+/
 index.html
-styles.css
-script.js
+trouble-diagnosis/
+ index.html
+ styles.css
+ script.js
 
-The root `/tools/index.html` is a **tool directory page** that links to all tools.
+rent-increase-check/
+ index.html
+ styles.css
+ script.js
 
-Agents should automatically add new tools to this page.
+The root **/index.html** is the tool directory page.
+
+Agents must update **/index.html** when adding new tools.
 
 ---
 
@@ -32,8 +38,6 @@ All tools must follow these constraints:
 • No backend required
 • Must work on **GitHub Pages**
 • Only use **HTML / CSS / JavaScript**
-
-No frameworks unless explicitly requested.
 
 Avoid:
 
@@ -84,13 +88,16 @@ Avoid putting logic directly inside HTML.
 
 Every tool page should include:
 
+title
 meta description
 
 Example:
 
 <meta name="description" content="Free real estate tool for property management.">
 
-Use Japanese language.
+Language:
+
+Japanese
 
 ---
 
@@ -116,44 +123,20 @@ wrong
 
 Steps:
 
-1. create new folder under `/tools`
+1. create a new folder at repository root
 2. generate index.html
 3. generate styles.css
 4. generate script.js
-5. update `/tools/index.html` to add a card link
+5. update /index.html to add a card link
 
 Example link:
 
-<a href="./rent-calculator/">家賃計算ツール</a>
+<a href="./rent-increase-check/">家賃値上げ診断ツール</a>
 
 ---
 
 # Target Users
 
 Japanese property managers
-Real estate agencies
 Landlords
-
-Tools should solve **practical real estate problems**.
-
-Examples:
-
-rent increase simulation
-repair responsibility checker
-lease risk diagnosis
-trouble diagnosis
-
----
-
-# Development Philosophy
-
-Tools should be:
-
-small
-fast
-simple
-useful
-
-Prefer **practical utility** over complex architecture.
-
-This repository is a **collection of lightweight tools**, not a large web application.
+Tenants
