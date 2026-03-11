@@ -1,127 +1,136 @@
-:root {
-  color-scheme: light;
-  --bg: #f5f8ff;
-  --text: #1f2a44;
-  --primary: #1d4ed8;
-  --primary-dark: #1e40af;
-  --card: #ffffff;
-  --border: #dbe3f0;
-  --danger: #b91c1c;
-  --warn: #d97706;
-  --ok: #047857;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
-  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Noto Sans JP", sans-serif;
+  background: #f5f7f8;
+  color: #2d3748;
 }
 
 .app {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: 2rem 1rem 3rem;
-}
-
-.hero h1 {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 16px;
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.25rem;
-  margin-top: 1rem;
-  box-shadow: 0 6px 20px rgba(37, 63, 105, 0.08);
-}
-
-.question {
-  border: 1px solid var(--border);
+  background: white;
   border-radius: 10px;
-  padding: 0.9rem;
-  margin: 0 0 1rem;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.question legend {
-  font-weight: 700;
-  padding: 0 0.25rem;
+.hero h1 {
+  margin: 0 0 10px 0;
+  font-size: 24px;
 }
 
-label {
+.hero p {
+  margin: 0;
+  color: #555;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
   display: block;
-  padding: 0.2rem 0;
-  cursor: pointer;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.field input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+fieldset.field {
+  border: none;
+  padding: 0;
+}
+
+fieldset label {
+  display: block;
+  margin-bottom: 6px;
 }
 
 .actions {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 button {
-  border: 0;
-  border-radius: 8px;
-  background: var(--primary);
-  color: #fff;
-  font-weight: 700;
-  padding: 0.7rem 1.1rem;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
   cursor: pointer;
 }
 
-button:hover {
-  background: var(--primary-dark);
+button.primary {
+  background: #008080;
+  color: white;
 }
 
 button.secondary {
-  background: #64748b;
+  background: #ddd;
 }
 
-.error {
-  color: var(--danger);
-  min-height: 1.25rem;
-  margin: 0 0 0.7rem;
+.result-empty {
+  color: #777;
 }
 
 .hidden {
   display: none;
 }
 
+.badge-row {
+  margin-bottom: 10px;
+}
+
 .badge {
   display: inline-block;
-  border-radius: 999px;
-  padding: 0.3rem 0.8rem;
-  color: #fff;
-  font-weight: 700;
-  margin: 0.25rem 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-right: 6px;
 }
 
-.badge.level-high {
-  background: var(--danger);
+.badge.high {
+  background: #e53e3e;
+  color: white;
 }
 
-.badge.level-mid {
-  background: var(--warn);
+.badge.medium {
+  background: #dd6b20;
+  color: white;
 }
 
-.badge.level-low {
-  background: var(--ok);
+.badge.low {
+  background: #38a169;
+  color: white;
 }
 
-#resultActions {
-  padding-left: 1.2rem;
+.result-summary {
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
-@media (max-width: 600px) {
-  .card {
-    padding: 1rem;
-  }
+.result-detail {
+  color: #555;
+}
+
+.page-footer {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  margin-top: 30px;
+}
+
+.page-footer a {
+  color: #008080;
+  text-decoration: none;
 }
