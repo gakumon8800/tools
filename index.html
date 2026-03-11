@@ -1,42 +1,78 @@
-diff --git a/index.html b/index.html
-index 7beaa6dd14944088f08d9e737a6c0ce21df069ca..1598d6fe08e36197b512e45105f84888dc3a676e 100644
---- a/index.html
-+++ b/index.html
-@@ -36,29 +36,37 @@ text-decoration:none;
- color:#008080;
- font-weight:bold;
- font-size:18px;
- }
- 
- .desc{
- margin-top:10px;
- color:#555;
- }
- </style>
- </head>
- 
- <body>
- 
- <div class="container">
- 
- <h1>不動産AIツール</h1>
- 
- <div class="card">
- <a href="./trouble-diagnosis/">賃貸トラブル診断ツール</a>
- <div class="desc">
- 質問に答えると、管理会社対応レベル（高・中・低）を表示します。
- </div>
- </div>
- 
-+
-+<div class="card">
-+<a href="./rent-increase-check/">家賃値上げ診断ツール</a>
-+<div class="desc">
-+現在の賃料や相場・築年数などから、家賃値上げの妥当性と紛争リスクを低・中・高で簡易診断できます。
-+</div>
-+</div>
-+
- </div>
- 
- </body>
- </html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>不動産AIツール | 賃貸管理・不動産の窓口</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="賃貸管理・不動産の窓口が提供する不動産AIツール集。賃貸トラブル診断や家賃値上げ診断などの無料ツールを公開しています。">
+<style>
+body{
+  font-family:sans-serif;
+  background:#f5f6f7;
+  margin:0;
+  padding:40px;
+}
+h1{
+  text-align:center;
+  margin-bottom:40px;
+}
+.container{
+  max-width:900px;
+  margin:auto;
+}
+.card{
+  background:white;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.card a{
+  text-decoration:none;
+  color:#008080;
+  font-weight:bold;
+  font-size:18px;
+}
+.desc{
+  margin-top:10px;
+  color:#555;
+}
+footer{
+  margin-top:60px;
+  text-align:center;
+  font-size:14px;
+  color:#666;
+}
+footer a{
+  color:#008080;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>不動産AIツール</h1>
+
+  <div class="card">
+    <a href="./trouble-diagnosis/">賃貸トラブル診断ツール</a>
+    <div class="desc">
+      質問に答えると、管理会社対応レベル（高・中・低）を表示します。
+    </div>
+  </div>
+
+  <div class="card">
+    <a href="./rent-increase-check/">家賃値上げ診断ツール</a>
+    <div class="desc">
+      現在の賃料や相場・築年数などから、家賃値上げの妥当性と紛争リスクを低・中・高で簡易診断できます。
+    </div>
+  </div>
+
+  <footer>
+    運営：
+    <a href="https://x.com/ai_gakumon" target="_blank" rel="noopener noreferrer">
+      賃貸管理・不動産の窓口
+    </a>
+  </footer>
+</div>
+</body>
+</html>
