@@ -1,83 +1,138 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>家賃値上げ妥当性・紛争リスク診断</title>
-    <meta
-      name="description"
-      content="現在の賃料や周辺相場、築年数などから家賃値上げの妥当性と争いになりそうな度合いを低・中・高で簡易診断できる無料ツール。"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="app">
-      <header class="hero card">
-        <h1>家賃値上げ妥当性・紛争リスク診断</h1>
-        <p>
-          入力条件をもとに、<strong>値上げ妥当性の目安</strong>と
-          <strong>争いになりそうな度合い</strong>を表示します。
-        </p>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>家賃値上げ妥当性・紛争リスク診断 | 賃貸管理・不動産の窓口</title>
+  <meta
+    name="description"
+    content="現在の賃料や周辺相場、築年数などから、家賃値上げの妥当性と紛争リスクを低・中・高で簡易診断できる無料ツールです。"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero card">
+      <h1>家賃値上げ妥当性・紛争リスク診断</h1>
+      <p>
+        入力条件をもとに、
+        <strong>家賃値上げの妥当性の目安</strong>と
+        <strong>争いになりそうな度合い</strong>
+        を表示します。
+      </p>
+    </header>
 
-      <section class="card" aria-labelledby="form-title">
-        <h2 id="form-title">条件入力</h2>
-        <form id="rentForm" novalidate>
-          <div class="field">
-            <label for="currentRent">現在の賃料（月額・円）</label>
-            <input id="currentRent" name="currentRent" type="number" min="10000" step="1000" required />
-          </div>
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">条件入力</h2>
 
-          <fieldset class="field">
-            <legend>周辺相場との比較</legend>
-            <label><input type="radio" name="marketComparison" value="2" required /> 現在賃料が相場より低い</label>
-            <label><input type="radio" name="marketComparison" value="1" /> ほぼ相場並み</label>
-            <label><input type="radio" name="marketComparison" value="0" /> 現在賃料が相場より高い</label>
-          </fieldset>
+      <form id="rentForm" novalidate>
+        <div class="field">
+          <label for="currentRent">現在の賃料（月額・円）</label>
+          <input
+            id="currentRent"
+            name="currentRent"
+            type="number"
+            min="10000"
+            step="1000"
+            required
+            placeholder="例：95000"
+          />
+        </div>
 
-          <div class="field">
-            <label for="buildingAge">築年数（年）</label>
-            <input id="buildingAge" name="buildingAge" type="number" min="0" max="120" step="1" required />
-          </div>
+        <fieldset class="field">
+          <legend>周辺相場との比較</legend>
+          <label>
+            <input type="radio" name="marketComparison" value="2" required />
+            現在賃料が相場より低い
+          </label>
+          <label>
+            <input type="radio" name="marketComparison" value="1" />
+            ほぼ相場並み
+          </label>
+          <label>
+            <input type="radio" name="marketComparison" value="0" />
+            現在賃料が相場より高い
+          </label>
+        </fieldset>
 
-          <div class="field">
-            <label for="yearsSinceRevision">前回改定からの年数（年）</label>
-            <input id="yearsSinceRevision" name="yearsSinceRevision" type="number" min="0" max="50" step="1" required />
-          </div>
+        <div class="field">
+          <label for="buildingAge">築年数（年）</label>
+          <input
+            id="buildingAge"
+            name="buildingAge"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            required
+            placeholder="例：12"
+          />
+        </div>
 
-          <fieldset class="field">
-            <legend>固定資産税や維持費の上昇</legend>
-            <label><input type="radio" name="costIncrease" value="2" required /> 明確に上昇している</label>
-            <label><input type="radio" name="costIncrease" value="1" /> やや上昇している</label>
-            <label><input type="radio" name="costIncrease" value="0" /> 特に上昇していない / 不明</label>
-          </fieldset>
+        <div class="field">
+          <label for="yearsSinceRevision">前回改定からの年数（年）</label>
+          <input
+            id="yearsSinceRevision"
+            name="yearsSinceRevision"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            required
+            placeholder="例：6"
+          />
+        </div>
 
-          <p id="errorText" class="error" role="alert" aria-live="polite"></p>
+        <fieldset class="field">
+          <legend>固定資産税や維持費の上昇</legend>
+          <label>
+            <input type="radio" name="costIncrease" value="2" required />
+            明確に上昇している
+          </label>
+          <label>
+            <input type="radio" name="costIncrease" value="1" />
+            やや上昇している
+          </label>
+          <label>
+            <input type="radio" name="costIncrease" value="0" />
+            特に上昇していない / 不明
+          </label>
+        </fieldset>
 
-          <div class="actions">
-            <button type="submit">診断する</button>
-            <button type="reset" class="secondary">リセット</button>
-          </div>
-        </form>
-      </section>
+        <div class="actions">
+          <button type="submit" class="primary">診断する</button>
+          <button type="reset" class="secondary">リセット</button>
+        </div>
+      </form>
+    </section>
 
-      <section id="result" class="card hidden" aria-live="polite">
-        <h2>診断結果</h2>
-        <p id="validityLevel" class="badge"></p>
-        <p id="validityMessage"></p>
-        <p id="disputeLevel" class="badge"></p>
-        <p id="disputeMessage"></p>
-        <small>
-          ※本診断は一般的な目安であり、法的判断を行うものではありません。個別事情は専門家へご相談ください。
-        </small>
-      </section>
-    </main>
+    <section class="card result-card" aria-labelledby="result-title">
+      <h2 id="result-title">診断結果</h2>
 
-    <footer class="footer">
-      <p>賃貸管理・不動産の窓口</p>
-      <p><a href="https://x.com/ai_gakumon" target="_blank" rel="noopener noreferrer">https://x.com/ai_gakumon</a></p>
+      <div id="resultEmpty" class="result-empty">
+        まだ診断していません。条件を入力して「診断する」を押してください。
+      </div>
+
+      <div id="resultBox" class="result-box hidden">
+        <div class="badge-row">
+          <span id="validityBadge" class="badge">妥当性</span>
+          <span id="riskBadge" class="badge">紛争リスク</span>
+        </div>
+
+        <p id="resultSummary" class="result-summary"></p>
+        <p id="resultDetail" class="result-detail"></p>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      このツールは
+      <a href="https://x.com/ai_gakumon" target="_blank" rel="noopener noreferrer">
+        賃貸管理・不動産の窓口
+      </a>
+      が提供しています。
     </footer>
+  </main>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>
