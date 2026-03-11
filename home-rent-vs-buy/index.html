@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>住宅ローン vs 賃貸比較</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div class="hero__inner">
+        <p class="eyebrow">参考シミュレーション</p>
+        <h1>住宅ローン vs 賃貸比較</h1>
+        <p class="hero__lead">
+          月々の家賃と住宅購入にかかる費用を、同じ居住年数でざっくり比較できるシンプルなツールです。
+          税制や保険、金利変動などは簡略化した参考値としてご利用ください。
+        </p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div class="panel__header">
+        <h2>条件を入力</h2>
+        <div class="panel__actions">
+          <button type="button" id="sampleButton" class="button button--primary">サンプル値を入力</button>
+          <button type="button" id="resetButton" class="button button--ghost">リセット</button>
+        </div>
+      </div>
+
+      <p class="helper-text">
+        物件価格の下落は、今回は「将来売却価格」を直接入力して反映します。
+      </p>
+
+      <form id="simulatorForm" class="form-grid" novalidate>
+        <label class="field">
+          <span>月額家賃</span>
+          <div class="field__input">
+            <input type="number" id="monthlyRent" min="0" step="1000" value="120000">
+            <span>円</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>想定居住年数</span>
+          <div class="field__input">
+            <input type="number" id="years" min="1" step="1" value="10">
+            <span>年</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>更新料</span>
+          <div class="field__input">
+            <input type="number" id="renewalFee" min="0" step="1000" value="120000">
+            <span>円</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>更新頻度</span>
+          <div class="field__input">
+            <input type="number" id="renewalFrequency" min="1" step="1" value="2">
+            <span>年ごと</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>購入物件価格</span>
+          <div class="field__input">
+            <input type="number" id="propertyPrice" min="0" step="10000" value="45000000">
+            <span>円</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>頭金</span>
+          <div class="field__input">
+            <input type="number" id="downPayment" min="0" step="10000" value="5000000">
+            <span>円</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>住宅ローン金利</span>
+          <div class="field__input">
+            <input type="number" id="interestRate" min="0" step="0.01" value="1.2">
+            <span>% / 年</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>ローン年数</span>
+          <div class="field__input">
+            <input type="number" id="loanYears" min="1" step="1" value="35">
+            <span>年</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>固定資産税</span>
+          <div class="field__input">
+            <input type="number" id="propertyTaxAnnual" min="0" step="1000" value="120000">
+            <span>円 / 年</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>管理費</span>
+          <div class="field__input">
+            <input type="number" id="managementFee" min="0" step="1000" value="15000">
+            <span>円 / 月</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>修繕積立金</span>
+          <div class="field__input">
+            <input type="number" id="repairReserve" min="0" step="1000" value="12000">
+            <span>円 / 月</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>購入時諸費用</span>
+          <div class="field__input">
+            <input type="number" id="purchaseCostRate" min="0" step="0.1" value="6">
+            <span>%</span>
+          </div>
+          <small>固定額ではなく物件価格に対する割合で入力します。</small>
+        </label>
+
+        <label class="field">
+          <span>将来売却価格</span>
+          <div class="field__input">
+            <input type="number" id="futureSalePrice" min="0" step="10000" value="36000000">
+            <span>円</span>
+          </div>
+        </label>
+
+        <label class="field">
+          <span>家賃上昇率</span>
+          <div class="field__input">
+            <input type="number" id="rentGrowthRate" min="0" step="0.1" value="0">
+            <span>% / 年</span>
+          </div>
+        </label>
+      </form>
+
+      <p id="errorMessage" class="error-message" aria-live="polite"></p>
+    </section>
+
+    <section class="results" aria-live="polite">
+      <article class="result-card result-card--accent">
+        <h2>比較結果</h2>
+        <p id="summaryMessage" class="summary-message">入力内容をもとに自動計算します。</p>
+      </article>
+
+      <article class="result-card">
+        <h3>購入総コスト</h3>
+        <p id="buyTotal" class="result-value">¥0</p>
+        <dl class="result-breakdown">
+          <div>
+            <dt>ローン総返済額</dt>
+            <dd id="loanRepaymentTotal">¥0</dd>
+          </div>
+          <div>
+            <dt>購入時諸費用</dt>
+            <dd id="purchaseCostTotal">¥0</dd>
+          </div>
+          <div>
+            <dt>売却価格差引後</dt>
+            <dd id="salePriceNote">¥0</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="result-card">
+        <h3>賃貸総コスト</h3>
+        <p id="rentTotal" class="result-value">¥0</p>
+        <dl class="result-breakdown">
+          <div>
+            <dt>家賃総額</dt>
+            <dd id="rentOnlyTotal">¥0</dd>
+          </div>
+          <div>
+            <dt>更新料総額</dt>
+            <dd id="renewalTotal">¥0</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="result-card">
+        <h3>差額</h3>
+        <p id="differenceTotal" class="result-value">¥0</p>
+        <p class="result-note">プラス表示は購入のほうが高く、マイナス表示は賃貸のほうが高い状態です。</p>
+      </article>
+    </section>
+
+    <section class="notice">
+      <h2>注意事項</h2>
+      <p>
+        このツールは参考シミュレーションです。税制、住宅ローン控除、火災保険、団体信用生命保険、変動金利、
+        将来の修繕費増加、引っ越し費用、売却手数料、不動産相場の変動などは簡略化しています。
+        最終判断は最新の条件や専門家の助言も踏まえてご検討ください。
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
