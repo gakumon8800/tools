@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>簡易間取り図作成ウェブアプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">Floor Plan Maker</p>
+        <h1>簡易間取り図作成</h1>
+        <p class="intro">募集図面や説明資料のたたき台を、ブラウザ上で手早く作成できます。</p>
+      </div>
+
+      <section class="panel">
+        <h2>追加</h2>
+        <div class="tool-grid">
+          <button type="button" class="tool-button" data-add-room>部屋を追加</button>
+          <button type="button" class="tool-button" data-add-part="door">ドア</button>
+          <button type="button" class="tool-button" data-add-part="window">窓</button>
+          <button type="button" class="tool-button" data-add-part="storage">収納</button>
+          <button type="button" class="tool-button" data-add-part="toilet">トイレ</button>
+          <button type="button" class="tool-button" data-add-part="bathroom">浴室</button>
+          <button type="button" class="tool-button" data-add-part="kitchen">キッチン</button>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>選択中の要素</h2>
+        <div class="field-group">
+          <label for="element-name">名称</label>
+          <input id="element-name" type="text" placeholder="要素を選択してください">
+        </div>
+        <div class="field-group">
+          <label for="element-subtext">表示テキスト</label>
+          <input id="element-subtext" type="text" placeholder="例: 6.0帖 / 9.8㎡">
+        </div>
+        <div class="selection-meta" id="selection-meta">未選択</div>
+        <button type="button" class="danger-button" id="delete-button">選択要素を削除</button>
+      </section>
+
+      <section class="panel">
+        <h2>保存・出力</h2>
+        <div class="action-stack">
+          <button type="button" class="secondary-button" id="save-button">JSON保存</button>
+          <button type="button" class="secondary-button" id="load-button">JSON読込</button>
+          <button type="button" class="primary-button" id="export-button">PNG出力</button>
+        </div>
+        <input id="file-input" type="file" accept="application/json" hidden>
+      </section>
+
+      <section class="panel note-panel">
+        <h2>操作メモ</h2>
+        <ul>
+          <li>ドラッグで移動、右下ハンドルでリサイズ</li>
+          <li>移動とリサイズはグリッドに吸着</li>
+          <li>Delete キーでも削除できます</li>
+        </ul>
+      </section>
+    </aside>
+
+    <main class="workspace">
+      <div class="workspace-header">
+        <div>
+          <h2>編集キャンバス</h2>
+          <p>白背景・SVGベースの簡易間取り図エディタ</p>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <svg id="floorplan-canvas" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" aria-label="簡易間取り図キャンバス"></svg>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
