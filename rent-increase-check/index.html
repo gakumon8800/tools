@@ -1,1 +1,582 @@
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>賃料値上げリスク診断ツール</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #5d6b78;
+      --line: #dfd6c8;
+      --accent: #0f766e;
+      --shadow: 0 20px 40px rgba(48, 44, 36, 0.08);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 28%),
+        radial-gradient(circle at top right, rgba(180, 83, 9, 0.12), transparent 22%),
+        linear-gradient(180deg, #f7f2e9 0%, #efe7da 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1100px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      padding: 24px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(250,244,236,0.95));
+      border: 1px solid rgba(223, 214, 200, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #d9f4ef;
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      margin: 14px 0 10px;
+      font-size: clamp(1.9rem, 5vw, 3.3rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(255, 253, 249, 0.96);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 1.15rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .hint {
+      margin: -2px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #cfc3b1;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 3px solid rgba(15, 118, 110, 0.15);
+      border-color: var(--accent);
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 20px;
+      width: 100%;
+      background: linear-gradient(135deg, #0f766e, #155e75);
+      color: #fff;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 18px 32px rgba(21, 94, 117, 0.22);
+    }
+
+    .result-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .score {
+      margin: 14px 0;
+      padding: 18px;
+      background: #f7f3ec;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+    }
+
+    .score strong {
+      display: block;
+      font-size: 2.4rem;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .meter {
+      width: 100%;
+      height: 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #1d9f75 0%, #f4b400 55%, #cf3f3f 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meter::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: var(--meter-position, 0%);
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--ink);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+    }
+
+    .list {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mini {
+      padding: 14px;
+      border-radius: 16px;
+      background: #f8f5ef;
+      border: 1px solid var(--line);
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+    }
+
+    .notice {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #f9f3df;
+      border: 1px solid #e9d8a6;
+      color: #6b4f12;
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .low {
+      background: #dff7ec;
+      color: #166543;
+    }
+
+    .mid {
+      background: #fff1cf;
+      color: #8a5a00;
+    }
+
+    .high {
+      background: #fde5e3;
+      color: #9f1c1c;
+    }
+
+    @media (max-width: 820px) {
+      .layout,
+      .grid,
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .shell {
+        width: min(100% - 16px, 1100px);
+        padding-top: 16px;
+      }
+
+      .hero,
+      .card {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      button {
+        position: sticky;
+        bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <span class="eyebrow">Rent Increase Check</span>
+      <h1>賃料値上げリスク診断ツール</h1>
+      <p>
+        32条で問題になりやすい事情をもとに、賃料値上げ請求が通るリスクを簡易診断します。
+        相場差、固定資産税などの負担増、前回改定からの経過、特約の有無をまとめて見られる、
+        スマホ対応の単体HTMLツールです。
+      </p>
+    </section>
+
+    <section class="layout">
+      <form class="card" id="risk-form">
+        <h2 class="section-title">物件と請求条件</h2>
+        <div class="grid">
+          <div class="field">
+            <label for="currentRent">現在賃料（月額・円）</label>
+            <input id="currentRent" name="currentRent" type="number" min="10000" step="1000" value="85000" required>
+          </div>
+          <div class="field">
+            <label for="proposedRent">提示後賃料（月額・円）</label>
+            <input id="proposedRent" name="proposedRent" type="number" min="10000" step="1000" value="92000" required>
+          </div>
+          <div class="field">
+            <label for="marketRent">近傍同種の相場（月額・円）</label>
+            <input id="marketRent" name="marketRent" type="number" min="10000" step="1000" value="90000" required>
+            <p class="hint">近隣で条件が近い物件の目安</p>
+          </div>
+          <div class="field">
+            <label for="yearsSinceReview">前回改定からの年数</label>
+            <input id="yearsSinceReview" name="yearsSinceReview" type="number" min="0" max="50" step="0.5" value="4">
+          </div>
+          <div class="field">
+            <label for="taxBurden">固定資産税・維持費の上昇</label>
+            <select id="taxBurden" name="taxBurden">
+              <option value="0">ほぼ増えていない</option>
+              <option value="8">やや増えた</option>
+              <option value="15">かなり増えた</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="economicShift">周辺経済事情の変動</label>
+            <select id="economicShift" name="economicShift">
+              <option value="0">横ばい</option>
+              <option value="7">やや上昇</option>
+              <option value="13">大きく上昇</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="improvement">大規模修繕・設備更新</label>
+            <select id="improvement" name="improvement">
+              <option value="0">特になし</option>
+              <option value="6">一部あり</option>
+              <option value="12">大きい投資あり</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="specialClause">値上げを抑える特約</label>
+            <select id="specialClause" name="specialClause">
+              <option value="0">特になし</option>
+              <option value="-10">一時的な据置合意あり</option>
+              <option value="-18">明確な増額制限特約あり</option>
+            </select>
+            <p class="hint">強い特約は値上げリスクを下げます</p>
+          </div>
+          <div class="field full">
+            <label for="tenantHardship">賃借人側の事情</label>
+            <select id="tenantHardship" name="tenantHardship">
+              <option value="0">特段の事情なし</option>
+              <option value="-6">支払余力に不安あり</option>
+              <option value="-10">営業・生活への影響が大きい</option>
+            </select>
+            <p class="hint">最終判断は個別事情に左右されますが、交渉上は無視しづらい材料です</p>
+          </div>
+        </div>
+        <button type="submit">リスクを診断する</button>
+      </form>
+
+      <section class="card" aria-live="polite">
+        <div class="result-top">
+          <div>
+            <h2 class="section-title">診断結果</h2>
+            <p id="lead" class="hint">入力内容に応じて、値上げ請求が認められやすい度合いを表示します。</p>
+          </div>
+          <div id="badge" class="badge low">低め</div>
+        </div>
+
+        <div class="score">
+          <strong id="scoreValue">38</strong>
+          <div class="meter" id="meter"></div>
+          <p id="scoreText" class="hint">現時点では、直ちに強い値上げ根拠があるとは言いにくい水準です。</p>
+        </div>
+
+        <div class="summary">
+          <div class="mini">
+            <span>増額率</span>
+            <strong id="increaseRate">8.2%</strong>
+          </div>
+          <div class="mini">
+            <span>相場との差</span>
+            <strong id="marketGap">+2,000円</strong>
+          </div>
+          <div class="mini">
+            <span>通りやすい材料</span>
+            <strong id="positiveCount">2件</strong>
+          </div>
+          <div class="mini">
+            <span>争点になりやすい材料</span>
+            <strong id="negativeCount">2件</strong>
+          </div>
+        </div>
+
+        <ul id="reasonList" class="list"></ul>
+
+        <div class="notice">
+          この診断は交渉の目安です。実際の増額可否は、契約書の文言、証拠資料、地域相場の取り方、
+          当事者の事情などで変わります。法的判断が必要なときは専門家確認を前提にしてください。
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('risk-form');
+    const badge = document.getElementById('badge');
+    const scoreValue = document.getElementById('scoreValue');
+    const scoreText = document.getElementById('scoreText');
+    const increaseRate = document.getElementById('increaseRate');
+    const marketGap = document.getElementById('marketGap');
+    const positiveCount = document.getElementById('positiveCount');
+    const negativeCount = document.getElementById('negativeCount');
+    const reasonList = document.getElementById('reasonList');
+    const meter = document.getElementById('meter');
+    const lead = document.getElementById('lead');
+
+    function formatYen(value) {
+      return new Intl.NumberFormat('ja-JP').format(Math.round(value)) + '円';
+    }
+
+    function evaluateRisk(values) {
+      const currentRent = Number(values.currentRent);
+      const proposedRent = Number(values.proposedRent);
+      const marketRent = Number(values.marketRent);
+      const yearsSinceReview = Number(values.yearsSinceReview);
+      const requestedIncreaseRate = ((proposedRent - currentRent) / currentRent) * 100;
+      const marketDifference = proposedRent - marketRent;
+
+      let score = 35;
+      const reasons = [];
+      let positives = 0;
+      let negatives = 0;
+
+      if (requestedIncreaseRate <= 0) {
+        score = 5;
+        reasons.push('提示後賃料が現在賃料を上回っていないため、値上げリスクはほぼありません。');
+      } else {
+        if (requestedIncreaseRate <= 5) {
+          score += 8;
+          positives += 1;
+          reasons.push('増額率が小さく、交渉上は比較的穏当な水準です。');
+        } else if (requestedIncreaseRate <= 10) {
+          score += 3;
+          reasons.push('増額率は中間帯で、他の事情の裏付けが重要です。');
+        } else if (requestedIncreaseRate <= 15) {
+          score -= 8;
+          negatives += 1;
+          reasons.push('増額率がやや大きく、客観資料が弱いと争われやすい水準です。');
+        } else {
+          score -= 18;
+          negatives += 1;
+          reasons.push('増額率が大きく、相場や負担増の明確な根拠がないと通りにくい傾向です。');
+        }
+
+        if (marketDifference <= 0) {
+          const delta = Math.abs(marketDifference);
+          if (delta >= currentRent * 0.1) {
+            score += 18;
+            positives += 1;
+            reasons.push('提示額が近傍相場を大きく下回っており、相場是正の理由が立ちやすいです。');
+          } else {
+            score += 10;
+            positives += 1;
+            reasons.push('提示額が近傍相場の範囲内で、相場比較上の説明がしやすいです。');
+          }
+        } else if (marketDifference <= currentRent * 0.05) {
+          score -= 6;
+          negatives += 1;
+          reasons.push('提示額が相場を少し上回っており、比較物件の出し方が争点になります。');
+        } else {
+          score -= 16;
+          negatives += 1;
+          reasons.push('提示額が近傍相場を大きく上回っており、32条ロジック上は不利です。');
+        }
+
+        if (yearsSinceReview >= 5) {
+          score += 12;
+          positives += 1;
+          reasons.push('前回改定から長期間が経過しており、見直しの必要性を主張しやすいです。');
+        } else if (yearsSinceReview >= 2) {
+          score += 5;
+          reasons.push('一定の経過期間があり、改定の話を出す余地があります。');
+        } else {
+          score -= 8;
+          negatives += 1;
+          reasons.push('前回改定から短期間で、値上げの必要性を丁寧に補強する必要があります。');
+        }
+      }
+
+      const selectableFactors = ['taxBurden', 'economicShift', 'improvement', 'specialClause', 'tenantHardship'];
+      selectableFactors.forEach((key) => {
+        const value = Number(values[key]);
+        score += value;
+        if (value > 0) {
+          positives += 1;
+        } else if (value < 0) {
+          negatives += 1;
+        }
+      });
+
+      if (Number(values.taxBurden) >= 8) {
+        reasons.push('固定資産税や維持費の増加は、値上げ事情として説明しやすい材料です。');
+      }
+      if (Number(values.economicShift) >= 7) {
+        reasons.push('周辺の地価・賃料水準の上昇は、経済事情の変動として補強要素になります。');
+      }
+      if (Number(values.improvement) >= 6) {
+        reasons.push('修繕や設備更新が大きいほど、賃料見直しの必要性を示しやすくなります。');
+      }
+      if (Number(values.specialClause) <= -10) {
+        reasons.push('据置や増額制限の特約があると、請求自体はできても結論に大きく影響します。');
+      }
+      if (Number(values.tenantHardship) <= -6) {
+        reasons.push('賃借人側の事情は裁判所の斟酌要素になり得るため、交渉では軽視できません。');
+      }
+
+      score = Math.max(0, Math.min(100, Math.round(score)));
+
+      let level = '低め';
+      let tone = 'low';
+      let message = '現時点では、直ちに強い値上げ根拠があるとは言いにくい水準です。';
+      if (score >= 70) {
+        level = '高め';
+        tone = 'high';
+        message = '客観事情がそろっており、値上げ請求が認められるリスクは比較的高めです。';
+      } else if (score >= 45) {
+        level = '中くらい';
+        tone = 'mid';
+        message = '有利な事情もある一方で、相場資料や特約の内容次第で結論がぶれやすい水準です。';
+      }
+
+      return {
+        score,
+        level,
+        tone,
+        message,
+        requestedIncreaseRate,
+        marketDifference,
+        reasons,
+        positives,
+        negatives
+      };
+    }
+
+    function render(result) {
+      badge.textContent = result.level;
+      badge.className = 'badge ' + result.tone;
+      scoreValue.textContent = result.score;
+      scoreText.textContent = result.message;
+      increaseRate.textContent = result.requestedIncreaseRate > 0
+        ? result.requestedIncreaseRate.toFixed(1) + '%'
+        : '0%';
+      marketGap.textContent = (result.marketDifference >= 0 ? '+' : '-') + formatYen(Math.abs(result.marketDifference));
+      positiveCount.textContent = result.positives + '件';
+      negativeCount.textContent = result.negatives + '件';
+      meter.style.setProperty('--meter-position', result.score + '%');
+      lead.textContent = '値上げが認められやすいほどスコアが高くなります。';
+
+      reasonList.innerHTML = '';
+      result.reasons.forEach((reason) => {
+        const item = document.createElement('li');
+        item.textContent = reason;
+        reasonList.appendChild(item);
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const values = Object.fromEntries(new FormData(form).entries());
+      render(evaluateRisk(values));
+    });
+
+    render(evaluateRisk(Object.fromEntries(new FormData(form).entries())));
+  </script>
+</body>
+</html>
