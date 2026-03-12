@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>募集図面から初期費用を自動計算</title>
+  <meta
+    name="description"
+    content="募集図面のPDFや画像をもとに、賃貸物件の初期費用を概算計算できる実務向けWebアプリです。"
+  >
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Property Management Tool</p>
+        <h1>募集図面から初期費用を自動計算</h1>
+        <p class="lead">
+          募集図面のPDF・画像から読取補助を行い、入力内容を確認しながら初期費用の概算明細を作成できます。
+        </p>
+      </div>
+      <div class="header-actions">
+        <button id="sampleButton" type="button" class="secondary-button">サンプルデータ読込</button>
+        <button id="resetButton" type="button" class="ghost-button">リセット</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="panel panel-form">
+        <div class="panel-section">
+          <h2>1. ファイルアップロード</h2>
+          <label class="upload-box" for="fileInput">
+            <input id="fileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,image/png,image/jpeg,application/pdf">
+            <span class="upload-title">PDF / PNG / JPG / JPEG を選択</span>
+            <span class="upload-subtitle">テキスト抽出できた場合は自動反映し、読取できない場合は手入力で続行できます。</span>
+          </label>
+          <div class="upload-meta">
+            <div>
+              <span class="meta-label">ファイル名</span>
+              <p id="fileName">未選択</p>
+            </div>
+            <div>
+              <span class="meta-label">読取ステータス</span>
+              <p id="parseStatus">未実行</p>
+            </div>
+          </div>
+        </div>
+
+        <form id="estimateForm" novalidate>
+          <div class="panel-section">
+            <div class="section-heading">
+              <h2>2. 読取結果入力フォーム</h2>
+              <p>金額はカンマ付き入力に対応し、「1ヶ月」「0.5ヶ月」のような月数入力も利用できます。</p>
+            </div>
+
+            <div class="form-grid">
+              <label>
+                <span>賃料</span>
+                <input type="text" id="rent" name="rent" inputmode="decimal" placeholder="72,000">
+              </label>
+              <label>
+                <span>管理費 / 共益費</span>
+                <input type="text" id="managementFee" name="managementFee" inputmode="decimal" placeholder="3,000">
+              </label>
+              <label>
+                <span>敷金</span>
+                <input type="text" id="deposit" name="deposit" inputmode="decimal" placeholder="0 または 1ヶ月">
+              </label>
+              <label>
+                <span>礼金</span>
+                <input type="text" id="keyMoney" name="keyMoney" inputmode="decimal" placeholder="1ヶ月">
+              </label>
+              <label>
+                <span>保証金</span>
+                <input type="text" id="securityDeposit" name="securityDeposit" inputmode="decimal" placeholder="0">
+              </label>
+              <label>
+                <span>償却</span>
+                <input type="text" id="amortization" name="amortization" inputmode="decimal" placeholder="0">
+              </label>
+              <label>
+                <span>仲介手数料</span>
+                <input type="text" id="brokerFee" name="brokerFee" inputmode="decimal" placeholder="79,200">
+              </label>
+              <label>
+                <span>保証会社初回費用</span>
+                <input type="text" id="guaranteeFee" name="guaranteeFee" inputmode="decimal" placeholder="37,500">
+              </label>
+              <label>
+                <span>火災保険料</span>
+                <input type="text" id="fireInsurance" name="fireInsurance" inputmode="decimal" placeholder="18,000">
+              </label>
+              <label>
+                <span>鍵交換代</span>
+                <input type="text" id="keyExchange" name="keyExchange" inputmode="decimal" placeholder="22,000">
+              </label>
+              <label>
+                <span>24時間サポート</span>
+                <input type="text" id="support24" name="support24" inputmode="decimal" placeholder="16,500">
+              </label>
+              <label>
+                <span>消毒料</span>
+                <input type="text" id="disinfection" name="disinfection" inputmode="decimal" placeholder="0">
+              </label>
+              <label>
+                <span>事務手数料</span>
+                <input type="text" id="adminFee" name="adminFee" inputmode="decimal" placeholder="0">
+              </label>
+              <label>
+                <span>契約開始日</span>
+                <input type="date" id="contractStartDate" name="contractStartDate">
+              </label>
+              <label>
+                <span>フリーレント月数</span>
+                <input type="number" id="freeRentMonths" name="freeRentMonths" min="0" step="0.5" placeholder="0">
+              </label>
+              <label>
+                <span>更新料</span>
+                <input type="text" id="renewalFee" name="renewalFee" inputmode="decimal" placeholder="0 または 1ヶ月">
+              </label>
+              <label>
+                <span>短期解約違約金の有無</span>
+                <select id="shortTermPenalty" name="shortTermPenalty">
+                  <option value="">未選択</option>
+                  <option value="none">なし</option>
+                  <option value="yes">あり</option>
+                </select>
+              </label>
+              <label class="full-span">
+                <span>備考</span>
+                <textarea id="notes" name="notes" rows="7" placeholder="抽出テキストや補足条件、現地確認メモなどを入力"></textarea>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <label class="toggle-card">
+                <input type="checkbox" id="includeProrated" name="includeProrated" checked>
+                <span>日割り計算をする</span>
+              </label>
+              <label class="toggle-card">
+                <input type="checkbox" id="includeNextMonth" name="includeNextMonth">
+                <span>翌月賃料を含める</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-button">計算する</button>
+              <p id="formMessage" class="form-message" aria-live="polite"></p>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <aside class="panel panel-result">
+        <div class="panel-section">
+          <h2>3. 計算結果</h2>
+          <div class="total-card">
+            <span>概算合計</span>
+            <strong id="totalAmount">¥0</strong>
+          </div>
+          <div class="result-table" id="resultTable" aria-live="polite"></div>
+          <div class="disclaimer-box">
+            <p>本計算は概算です。実際の契約条件・課税区分・保証会社条件等により変動します。</p>
+            <p>募集図面の記載内容は必ず原本をご確認ください。</p>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h2>4. 注意事項</h2>
+          <div id="warningTags" class="tag-list"></div>
+          <ul id="warningList" class="warning-list"></ul>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
