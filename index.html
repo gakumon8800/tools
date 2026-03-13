@@ -1,88 +1,244 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>不動産AIツール | 賃貸管理・不動産の窓口</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta
-  name="description"
-  content="賃貸管理・不動産の窓口が公開する不動産AIツール集です。賃貸トラブル診断、家賃値上げ診断、住宅ローンと賃貸比較などの便利なツールを掲載しています。"
->
-<style>
-body{
-  font-family:sans-serif;
-  background:#f5f6f7;
-  margin:0;
-  padding:40px;
-}
-h1{
-  text-align:center;
-  margin-bottom:40px;
-}
-.container{
-  max-width:900px;
-  margin:auto;
-}
-.card{
-  background:white;
-  padding:20px;
-  margin-bottom:20px;
-  border-radius:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
-.card a{
-  text-decoration:none;
-  color:#008080;
-  font-weight:bold;
-  font-size:18px;
-}
-.desc{
-  margin-top:10px;
-  color:#555;
-}
-footer{
-  margin-top:60px;
-  text-align:center;
-  font-size:14px;
-  color:#666;
-}
-footer a{
-  color:#008080;
-  text-decoration:none;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>不動産AIツール</title>
+  <meta
+    name="description"
+    content="賃貸管理・不動産実務向けのWebツール一覧です。値上げ診断、初期費用計算、住宅ローン比較、間取り図作成に対応しています。"
+  >
+  <style>
+    :root {
+      --surface: rgba(255, 252, 247, 0.9);
+      --ink: #1f2a33;
+      --muted: #5d6a72;
+      --line: rgba(97, 78, 56, 0.14);
+      --accent: #0f766e;
+      --accent-2: #c97316;
+      --shadow: 0 24px 60px rgba(36, 30, 20, 0.08);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 26%),
+        radial-gradient(circle at top right, rgba(201, 115, 22, 0.12), transparent 22%),
+        linear-gradient(180deg, #f6f1e8 0%, #efe5d7 100%);
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 28px 0 40px;
+    }
+
+    .hero {
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(250, 244, 236, 0.96));
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    h1 {
+      margin: 16px 0 10px;
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 22px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .badge {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(201, 115, 22, 0.12);
+      color: var(--accent-2);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+    }
+
+    .card p,
+    .meta,
+    footer {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .card a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-width: 9rem;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #0f766e, #155e75);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 22px;
+      padding: 20px 6px 0;
+      font-size: 0.92rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .shell {
+        width: min(100% - 16px, 1120px);
+        padding-top: 16px;
+      }
+
+      .hero,
+      .card {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-  <h1>不動産AIツール</h1>
+  <main class="shell">
+    <section class="hero">
+      <span class="eyebrow">Real Estate Toolkit</span>
+      <h1>不動産AIツール</h1>
+      <p>
+        賃貸管理や募集業務で使いやすい、ブラウザ完結型の小さな実務ツール集です。
+        新しく追加したツールも含めて、このページからそのまま開けます。
+      </p>
+    </section>
 
-  <div class="card">
-    <a href="./trouble-diagnosis/">賃貸トラブル診断ツール</a>
-    <div class="desc">
-      賃貸で起きている状況を整理し、相談や対応の優先度を確認できる診断ツールです。
-    </div>
-  </div>
+    <section class="grid" aria-label="ツール一覧">
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>賃料値上げリスク診断ツール</h2>
+            <p>借地借家法32条で争点になりやすい材料を整理し、値上げ請求の通りやすさを簡易診断します。</p>
+          </div>
+          <span class="badge">診断</span>
+        </div>
+        <div class="meta">相場差、経過年数、維持費上昇、特約の有無をまとめて確認</div>
+        <a href="./tools/rent-increase-check/">ツールを開く</a>
+      </article>
 
-  <div class="card">
-    <a href="./rent-increase-check/">家賃値上げ診断ツール</a>
-    <div class="desc">
-      家賃増額の妥当性や、確認しておきたい条件をチェックできる診断ツールです。
-    </div>
-  </div>
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>募集図面から初期費用を自動計算</h2>
+            <p>募集図面のPDFや画像をもとに、賃貸契約時の初期費用を概算明細としてまとめられます。</p>
+          </div>
+          <span class="badge">新規</span>
+        </div>
+        <div class="meta">手入力併用で読取補助、概算合計、注意事項の整理に対応</div>
+        <a href="./tools/mysoku-intial-cost/">ツールを開く</a>
+      </article>
 
-  <div class="card">
-    <a href="https://gakumon8800.github.io/tools/home-rent-vs-buy/" target="_blank" rel="noopener noreferrer">住宅ローン vs 賃貸比較</a>
-    <div class="desc">
-      住宅購入と賃貸の総支出を比較して、毎月負担や累計コストの違いを確認できるツールです。
-    </div>
-  </div>
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>住宅ローン vs 賃貸比較</h2>
+            <p>購入と賃貸の総コストを同じ居住年数で比較し、住み方ごとの費用差を見える化します。</p>
+          </div>
+          <span class="badge">比較</span>
+        </div>
+        <div class="meta">ローン返済、管理費、修繕積立金、売却想定まで含めて試算</div>
+        <a href="./tools/home-rent-vs-buy/">ツールを開く</a>
+      </article>
 
-  <footer>
-    運営:
-    <a href="https://x.com/ai_gakumon" target="_blank" rel="noopener noreferrer">
-      賃貸管理・不動産の窓口
-    </a>
-  </footer>
-</div>
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <h2>簡易間取り図作成</h2>
+            <p>募集図面や説明資料のたたき台に使える、ブラウザ上の簡易間取り図エディタです。</p>
+          </div>
+          <span class="badge">新規</span>
+        </div>
+        <div class="meta">部屋・ドア・窓・水回りを配置し、JSON保存やPNG出力に対応</div>
+        <a href="./tools/floor-plan-maker/">ツールを開く</a>
+      </article>
+    </section>
+
+    <footer>
+      <div>運営: 賃貸管理・不動産の窓口</div>
+      <a href="https://x.com/ai_gakumon" target="_blank" rel="noopener noreferrer">X アカウントを見る</a>
+    </footer>
+  </main>
 </body>
 </html>
